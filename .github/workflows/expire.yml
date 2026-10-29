@@ -1,0 +1,11 @@
+name: Remove the install files after onboarding
+on:
+  schedule: [{ cron: '0 6 * * *' }]
+  workflow_dispatch:
+permissions: { contents: write }
+jobs:
+  expire:
+    runs-on: ubuntu-latest
+    steps:
+      - run: if [ "$(date -u +%Y%m%d)" -gt 20261105 ]; then gh release delete install --yes --cleanup-tag -R "$GITHUB_REPOSITORY" || true; fi
+        env: { GH_TOKEN: '${{ github.token }}' }
